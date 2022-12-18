@@ -57,22 +57,15 @@ def add_to_cart(request):
 
 def remove_from_cart(request, id):
     item = get_object_or_404(ProductItem, id=id)
-    order_qs = Order.objects.filter(user=request.user, ordered=False)
-    if order_qs.exists():
-        order = order_qs[0]
-        # check if the order item is in the order
-        if order.items.filter(item__id=item.id).exists():
-            order_item = OrderItem.objects.filter(
-                item=item,
-                user=request.user,
-                ordered=False
-            )[0]
-            order_item.delete()
-            messages.info(request, "This item was removed from your cart.")
-            return redirect("order-summary")
-        else:
-            messages.info(request, "This item was not in your cart")
-            return redirect("product_detail", slug=item.slug)
+    order_item = OrderItem.objects.filter(
+        item=item,
+        user=request.user,
+        ordered=False
+    )
+    order_item.delete()
+    request.session['cart_items'] = OrderItem.objects.filter(user=request.user, ordered=False).count()
+    return redirect('show_cart')
+
         
 
 def show_cart(request):
