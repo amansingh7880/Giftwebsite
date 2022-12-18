@@ -1,0 +1,33 @@
+{% block content %}
+<table class="table">
+    <thead>
+        <tr>
+            <th>S.No.</th>
+            <th>Product Name</th>
+            <th>Product Image</th>
+            <th>Price</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for item in product %}
+            <tr>
+                <td style="width:10%;">{{item.image.id}}</td>
+                <td style="width:20%;">{{item.title}}</td>
+                <td style="width:40%;"><img src="{{item.image.url}}"></td>
+                <td style="width:30%;">{{item.price}}</td>
+            </tr>    
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock content %}
+{% block css %}
+    <style>
+        table{
+            border:5px 5px 5px 5px solid black;
+            box-sizing: border-box;
+        }
+        tr{
+            width:auto;
+        }
+    </style>
+{% endblock css %}  
