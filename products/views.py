@@ -65,7 +65,6 @@ def remove_from_cart(request, id):
     order_item.delete()
     request.session['cart_items'] = OrderItem.objects.filter(user=request.user, ordered=False).count()
     return redirect('show_cart')
-
         
 
 def show_cart(request):
