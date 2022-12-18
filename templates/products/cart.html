@@ -1,0 +1,61 @@
+{% extends 'layout/base.html' %}
+{% load django_bootstrap5 %}
+{% load static %}
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-8 my-3 mx-auto">
+            <div class="card mt-5 border-0">
+                <div class="card-body">
+                    <h3 class="card-title">Cart</h3>
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th scope="col">Product</th>
+                                <th scope="col">Quantity</th>
+                                <th scope="col">Price</th>
+                                <th scope="col">Total</th>
+                                <th scope="col">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in orders %}
+                            <tr>
+                                <td>{{ item.item.title }}</td>
+                                <td>{{ item.quantity }}</td>
+                                <td>{{ item.item.price }}</td>
+                                <td class="amt">{% widthratio item.item.price 1 item.quantity %}</td>
+                                <td>
+                                    <a href="{% url 'remove_from_cart' item.id %}" class="btn btn-danger">Remove</a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    <div class="card-footer">
+                        <h4 id="totalOut">Total: </h4>
+                        <a href="{% url 'checkout' %}" class="btn btn-success">Checkout</a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block js %}
+<script src="https://code.jquery.com/jquery-3.6.2.min.js"
+    integrity="sha256-2krYZKh//PcchRtd+H+VyyQoZ/e3EcrkxhM8ycwASPA=" crossorigin="anonymous"></script>
+<script>
+    $(document).ready(function () {
+        var total = 0;
+        $('.amt').each(function () {
+            total += parseInt($(this).text());
+            console.log(total)
+        });
+        $('#totalOut').text('Total: ' + total);
+    });
+
+</script>
+{% endblock %}
